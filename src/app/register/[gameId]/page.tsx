@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Navbar from "@/app/components/Navbar";
 import type { Game, PaymentConfig, Player, Captain } from "@/types";
 import { useAuth } from "@/lib/auth-context";
 import StepIndicator from "@/app/components/register/StepIndicator";
@@ -251,36 +252,8 @@ export default function RegistrationFlow() {
 
   return (
     <div className="register-layout">
-      {/* Navbar overlay header */}
-      <header style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "1.25rem 3.5rem", zIndex: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Link href="/" className="navbar__logo">
-          <div className="navbar__logo-icon">SGS</div>
-          <div className="navbar__logo-text">
-            SPORTS GUILD
-            <span>Society</span>
-          </div>
-        </Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
-          <span style={{ fontSize: "0.85rem", color: "var(--color-text-muted)" }}>Logged in as <strong style={{color:"white"}}>{user.email}</strong></span>
-          <button 
-            onClick={async () => {
-              await fetch('/api/auth/me', { method: 'POST' });
-              window.location.reload();
-            }}
-            style={{
-              background: "rgba(255,255,255,0.1)",
-              border: "none",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "8px",
-              fontSize: "0.85rem",
-              cursor: "pointer"
-            }}
-          >
-            Sign Out
-          </button>
-        </div>
-      </header>
+      {/* Navbar */}
+      <Navbar />
 
       <div className="register-container">
         <div className="register-header" style={{ marginBottom: "1.5rem" }}>

@@ -24,21 +24,18 @@ export default function Home() {
           </div>
 
           <div className="feature-grid">
-            <article className="feature-card large">
+            <article className="feature-card">
               <span className="feature-number">01</span>
-              <div className="feature-icon">⚡</div>
               <h3>High Energy</h3>
               <p>Fast-paced experiences designed to get everyone involved and moving.</p>
             </article>
             <article className="feature-card">
               <span className="feature-number">02</span>
-              <div className="feature-icon">🏆</div>
               <h3>Real Competition</h3>
               <p>Structured tournaments, live results and a proper path to the podium.</p>
             </article>
             <article className="feature-card">
               <span className="feature-number">03</span>
-              <div className="feature-icon">🤝</div>
               <h3>One Community</h3>
               <p>Bring athletes, supporters and organizers together through sport.</p>
             </article>
@@ -56,16 +53,8 @@ export default function Home() {
 
       {/* Split Section / The SGS Experience */}
       <section className="split-section">
-        <div className="public-page-container" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "4rem", alignItems: "center" }}>
-          <div className="split-image">
-            <Image
-              src="/athlete-1.jpg"
-              alt="Sports Guild Society"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-          <div className="split-copy">
+        <div className="public-page-container">
+          <div className="split-copy" style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
             <span className="section-kicker">The SGS Experience</span>
             <h2>Built for<br /><em>the moment.</em></h2>
             <p>

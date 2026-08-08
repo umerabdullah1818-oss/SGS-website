@@ -12,6 +12,7 @@ export default function AdminRegistrationsPage() {
   const [loading, setLoading] = useState(true);
   const [filterGameId, setFilterGameId] = useState<string>("all");
   const [selectedReg, setSelectedReg] = useState<Registration | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const fetchRegistrations = async () => {
     try {
@@ -57,6 +58,9 @@ export default function AdminRegistrationsPage() {
       if (selectedReg && selectedReg.id === id) {
         setSelectedReg({ ...selectedReg, status });
       }
+      const label = status === "verified" ? "✅ Payment Verified!" : status === "rejected" ? "❌ Registration Rejected" : "⏳ Marked as Pending";
+      setSuccessMsg(label);
+      setTimeout(() => setSuccessMsg(null), 3000);
     } catch {
       alert("Failed to update status");
     }
@@ -146,11 +150,11 @@ export default function AdminRegistrationsPage() {
                   <tr key={reg.id}>
                     <td style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}>{date}</td>
                     <td>
-                      <div style={{ fontWeight: 600, color: "var(--color-white)" }}>{reg.gameNameSnapshot}</div>
+                      <div style={{ fontWeight: 600, color: "var(--color-text)" }}>{reg.gameNameSnapshot}</div>
                       <div style={{ fontSize: "0.8rem", color: "var(--color-text-muted)" }}>{reg.formatName}</div>
                     </td>
                     <td>
-                      <div style={{ fontWeight: 600, color: "var(--color-white)" }}>{name}</div>
+                      <div style={{ fontWeight: 600, color: "var(--color-text)" }}>{name}</div>
                       <div style={{ fontSize: "0.8rem", color: "var(--color-text-muted)" }}>
                         {reg.teamName ? `${reg.players.length} players` : reg.players[0]?.rollNumber}
                       </div>
@@ -246,7 +250,7 @@ export default function AdminRegistrationsPage() {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
                   <div>
                     <div style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Amount</div>
-                    <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--color-white)" }}>Rs. {selectedReg.payment.amountTransferred}</div>
+                    <div style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--color-text)" }}>Rs. {selectedReg.payment.amountTransferred}</div>
                   </div>
                   <div>
                     <div style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>Status</div>
@@ -314,7 +318,7 @@ export default function AdminRegistrationsPage() {
                       onClick={() => updateStatus(selectedReg.id!, "rejected")}
                       disabled={selectedReg.status === "rejected"}
                     >
-                      Reject
+                      {selectedReg.status === "rejected" ? "Rejected ✗" : "Reject"}
                     </button>
                     <button 
                       className="admin-btn admin-btn--secondary"
@@ -325,17 +329,37 @@ export default function AdminRegistrationsPage() {
                     </button>
                     <button 
                       className="admin-btn"
-                      style={{ background: "#00c864", color: "white" }}
+                      style={{ background: selectedReg.status === "verified" ? "#059669" : "#00c864", color: "white" }}
                       onClick={() => updateStatus(selectedReg.id!, "verified")}
                       disabled={selectedReg.status === "verified"}
                     >
-                      Verify Payment
+                      {selectedReg.status === "verified" ? "✓ Verified" : "Verify Payment"}
                     </button>
                   </>
                 )}
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {successMsg && (
+        <div style={{
+          position: "fixed",
+          bottom: "2rem",
+          right: "2rem",
+          background: "var(--color-primary)",
+          color: "white",
+          padding: "1rem 1.5rem",
+          borderRadius: "12px",
+          fontWeight: 600,
+          fontSize: "0.95rem",
+          boxShadow: "0 10px 30px rgba(138, 43, 226, 0.4)",
+          zIndex: 9999,
+          animation: "fadeInUp 0.3s ease"
+        }}>
+          {successMsg}
         </div>
       )}
     </>
