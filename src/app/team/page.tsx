@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 import type { TeamMember } from "@/types";
 
 const YEARS = [
@@ -50,66 +51,23 @@ export default function PublicTeamPage() {
   return (
     <>
       <Navbar />
-      <div style={{
-        minHeight: "100vh",
-        background: "#050a14",
-        paddingTop: "120px",
-        paddingBottom: "4rem",
-        fontFamily: "var(--font-ui)",
-      }}>
+      <div className="public-page-layout">
         {/* Hero Header */}
-        <div style={{
-          textAlign: "center",
-          maxWidth: "900px",
-          margin: "0 auto 3rem",
-          padding: "0 2rem",
-        }}>
-          <h1 style={{
-            fontFamily: "var(--font-heading)",
-            fontSize: "clamp(2rem, 5vw, 3.5rem)",
-            color: "white",
-            marginBottom: "1rem",
-            letterSpacing: "-0.02em",
-          }}>
-            Our <span style={{ color: "var(--color-primary-light)" }}>Team</span>
+        <div className="public-page-header">
+          <h1 className="public-page-title">
+            Our <span>Team</span>
           </h1>
-          <p style={{
-            fontSize: "1.1rem",
-            color: "var(--color-text-muted)",
-            lineHeight: 1.6,
-            maxWidth: "600px",
-            margin: "0 auto 2.5rem",
-          }}>
+          <p className="public-page-subtitle">
             The passionate individuals who make the Sports Guild Society thrive. Meet our team across the years.
           </p>
 
           {/* Year Selector */}
-          <div style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "0.5rem",
-            justifyContent: "center",
-          }}>
+          <div className="team-year-selector">
             {YEARS.map((y) => (
               <button
                 key={y}
                 onClick={() => setSelectedYear(y)}
-                style={{
-                  padding: "0.6rem 1.5rem",
-                  borderRadius: "30px",
-                  border: "1px solid",
-                  borderColor: selectedYear === y ? "var(--color-primary)" : "rgba(255,255,255,0.1)",
-                  background: selectedYear === y
-                    ? "linear-gradient(135deg, var(--color-primary), #4872ff)"
-                    : "rgba(255,255,255,0.03)",
-                  color: selectedYear === y ? "white" : "var(--color-text-muted)",
-                  fontSize: "0.88rem",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  transition: "all 0.25s ease",
-                  fontFamily: "var(--font-ui)",
-                  boxShadow: selectedYear === y ? "0 4px 15px rgba(30,86,255,0.4)" : "none",
-                }}
+                className={`team-year-btn ${selectedYear === y ? "team-year-btn--active" : ""}`}
               >
                 {y}
               </button>
@@ -180,7 +138,7 @@ export default function PublicTeamPage() {
                 <div style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                  gap: "1.25rem",
+                  gap: "1.5rem",
                 }}>
                   {groupMembers.map((member) => {
                     const isExpanded = expandedId === member.id;
@@ -188,15 +146,12 @@ export default function PublicTeamPage() {
                       <div
                         key={member.id}
                         onClick={() => setExpandedId(isExpanded ? null : member.id)}
+                        className="glass-card"
                         style={{
-                          background: isExpanded ? GROUP_GRADIENTS[group] : "rgba(255,255,255,0.025)",
-                          backdropFilter: "blur(12px)",
-                          border: `1px solid ${isExpanded ? GROUP_COLORS[group] + "55" : "rgba(255,255,255,0.08)"}`,
-                          borderRadius: "16px",
-                          padding: "1.75rem",
-                          cursor: "pointer",
-                          transition: "all 0.3s ease",
-                          overflow: "hidden",
+                          background: isExpanded ? GROUP_GRADIENTS[group] : "var(--color-glass-bg)",
+                          border: `1px solid ${isExpanded ? GROUP_COLORS[group] + "66" : "var(--color-glass-border)"}`,
+                          padding: "2rem",
+                          boxShadow: isExpanded ? `0 10px 30px ${GROUP_COLORS[group]}1a` : "none",
                         }}
                       >
                         {/* Top part */}
@@ -211,6 +166,7 @@ export default function PublicTeamPage() {
                                 borderRadius: "50%",
                                 objectFit: "cover",
                                 border: `3px solid ${GROUP_COLORS[group]}`,
+                                boxShadow: `0 0 15px ${GROUP_COLORS[group]}40`,
                                 flexShrink: 0,
                               }}
                             />
@@ -219,7 +175,7 @@ export default function PublicTeamPage() {
                               width: 64,
                               height: 64,
                               borderRadius: "50%",
-                              background: `${GROUP_COLORS[group]}22`,
+                              background: `${GROUP_COLORS[group]}15`,
                               border: `2px solid ${GROUP_COLORS[group]}44`,
                               display: "flex",
                               alignItems: "center",
@@ -228,12 +184,13 @@ export default function PublicTeamPage() {
                               fontWeight: 800,
                               color: GROUP_COLORS[group],
                               flexShrink: 0,
+                              boxShadow: `0 0 15px ${GROUP_COLORS[group]}15`,
                             }}>
                               {member.name.charAt(0).toUpperCase()}
                             </div>
                           )}
                           <div>
-                            <div style={{ fontWeight: 700, color: "white", fontSize: "1.05rem" }}>
+                            <div style={{ fontWeight: 700, color: "white", fontSize: "1.1rem" }}>
                               {member.name}
                             </div>
                             <div style={{
@@ -241,6 +198,7 @@ export default function PublicTeamPage() {
                               color: GROUP_COLORS[group],
                               fontWeight: 600,
                               marginTop: "0.2rem",
+                              letterSpacing: "0.02em",
                             }}>
                               {member.designation}
                             </div>
@@ -250,11 +208,11 @@ export default function PublicTeamPage() {
                         {/* Expanded details */}
                         {isExpanded && (
                           <div style={{
-                            borderTop: `1px solid ${GROUP_COLORS[group]}33`,
+                            borderTop: `1px solid ${GROUP_COLORS[group]}25`,
                             paddingTop: "1.25rem",
                             display: "flex",
                             flexDirection: "column",
-                            gap: "1rem",
+                            gap: "1.25rem",
                             animation: "fadeIn 0.3s ease",
                           }}>
                             {member.successStory && (
@@ -262,7 +220,7 @@ export default function PublicTeamPage() {
                                 <div style={{ fontSize: "0.75rem", fontWeight: 700, color: GROUP_COLORS[group], marginBottom: "0.4rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                                   Success Story
                                 </div>
-                                <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.6 }}>
+                                <p style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.65 }}>
                                   {member.successStory}
                                 </p>
                               </div>
@@ -272,22 +230,24 @@ export default function PublicTeamPage() {
                                 <div style={{ fontSize: "0.75rem", fontWeight: 700, color: GROUP_COLORS[group], marginBottom: "0.4rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                                   Importance to SGS
                                 </div>
-                                <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.6 }}>
+                                <p style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.65 }}>
                                   {member.importance}
                                 </p>
                               </div>
                             )}
                             {member.feedback && (
                               <div style={{
-                                background: "rgba(255,255,255,0.04)",
-                                borderRadius: "10px",
-                                padding: "1rem",
-                                borderLeft: `3px solid ${GROUP_COLORS[group]}`,
+                                background: "rgba(255,255,255,0.02)",
+                                borderRadius: "12px",
+                                padding: "1.25rem",
+                                borderLeft: `4px solid ${GROUP_COLORS[group]}`,
+                                border: `1px solid ${GROUP_COLORS[group]}15`,
+                                borderLeftWidth: "4px",
                               }}>
                                 <div style={{ fontSize: "0.75rem", fontWeight: 700, color: GROUP_COLORS[group], marginBottom: "0.4rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                                   SGS Feedback
                                 </div>
-                                <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.6, fontStyle: "italic" }}>
+                                <p style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.65, fontStyle: "italic" }}>
                                   &ldquo;{member.feedback}&rdquo;
                                 </p>
                               </div>
@@ -303,14 +263,15 @@ export default function PublicTeamPage() {
                         {/* Click hint */}
                         {!isExpanded && (member.successStory || member.importance || member.feedback) && (
                           <div style={{
-                            marginTop: "0.75rem",
+                            marginTop: "1rem",
                             fontSize: "0.75rem",
                             color: "var(--color-text-muted)",
                             display: "flex",
                             alignItems: "center",
-                            gap: "0.3rem",
+                            gap: "0.35rem",
+                            transition: "color 0.2s ease",
                           }}>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                               <polyline points="6 9 12 15 18 9" />
                             </svg>
                             Click to view full profile
@@ -325,6 +286,7 @@ export default function PublicTeamPage() {
           )}
         </div>
       </div>
+      <Footer />
 
       <style jsx>{`
         @keyframes spin {

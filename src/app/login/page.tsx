@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
 import { useAuth } from "@/lib/auth-context";
 import "./auth.css";
 
-export default function PublicLogin() {
+function PublicLoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callback = searchParams.get("callback") || "/";
@@ -87,5 +87,13 @@ export default function PublicLogin() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function PublicLogin() {
+  return (
+    <Suspense fallback={null}>
+      <PublicLoginContent />
+    </Suspense>
   );
 }

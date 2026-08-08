@@ -72,13 +72,12 @@ export default function Navbar() {
       <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         {loading ? null : user ? (
           <>
-            <span style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.7)" }}>
+            <span className="navbar__user-email">
               {user.email}
             </span>
             <button
               onClick={handleLogout}
-              className="navbar__cta"
-              style={{ cursor: "pointer", border: "none", background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)" }}
+              className="navbar__logout-btn"
             >
               Logout
             </button>

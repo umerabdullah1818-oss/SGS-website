@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 import "./results.css";
 
 // Force dynamic rendering since we cannot connect to Firebase during static build
@@ -21,7 +22,7 @@ import { getDb } from "@/lib/mongodb";
 
 export default async function ResultsPage() {
   let results: Result[] = [];
-  
+
   try {
     const db = await getDb();
     const docs = await db
@@ -29,7 +30,7 @@ export default async function ResultsPage() {
       .find()
       .sort({ createdAt: -1 })
       .toArray();
-      
+
     results = docs.map(doc => {
       const { _id, ...rest } = doc;
       return {
@@ -104,6 +105,7 @@ export default async function ResultsPage() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

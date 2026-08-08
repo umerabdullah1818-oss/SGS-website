@@ -3,45 +3,72 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #050a14;
+  background: var(--color-bg);
   padding: 2rem;
-  padding-top: 100px;
+  padding-top: 120px;
   font-family: var(--font-ui);
-  color: white;
+  color: var(--color-white);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add a subtle ambient glow behind the card */
+.public-auth-layout::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(47, 92, 255, 0.08) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .public-auth-card {
   width: 100%;
   max-width: 420px;
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-xl);
   padding: 3rem 2.5rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s var(--transition-smooth), border-color 0.3s ease;
+}
+
+.public-auth-card:hover {
+  border-color: rgba(47, 92, 255, 0.2);
 }
 
 .public-auth-logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
-  background: var(--color-primary);
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: white;
   font-family: var(--font-heading);
+  font-weight: 800;
   font-size: 1.25rem;
-  font-weight: 700;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   text-decoration: none;
   margin: 0 auto 1.5rem;
+  box-shadow: 0 4px 15px rgba(47, 92, 255, 0.3);
 }
 
 .public-auth-title {
   text-align: center;
   font-family: var(--font-heading);
-  font-size: 1.75rem;
+  font-size: 1.85rem;
+  font-weight: 800;
   margin-bottom: 0.5rem;
+  color: var(--color-white);
 }
 
 .public-auth-subtitle {
@@ -52,11 +79,11 @@
 }
 
 .public-auth-error {
-  background: rgba(255, 70, 70, 0.1);
-  border: 1px solid rgba(255, 70, 70, 0.2);
-  color: #ff6b6b;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #f87171;
   padding: 0.75rem 1rem;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   font-size: 0.85rem;
   margin-bottom: 1.5rem;
   text-align: center;
@@ -74,23 +101,31 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .public-auth-group input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: white;
+  padding: 0.8rem 1.1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  color: var(--color-white);
   font-size: 0.95rem;
+  font-family: var(--font-ui);
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s var(--transition-smooth);
+}
+
+.public-auth-group input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
 }
 
 .public-auth-group input:focus {
-  border-color: var(--color-primary);
-  background: rgba(30, 86, 255, 0.05);
+  border-color: var(--color-primary-light);
+  background: rgba(47, 92, 255, 0.03);
+  box-shadow: 0 0 0 3px rgba(47, 92, 255, 0.15);
 }
 
 .public-auth-submit {
@@ -99,18 +134,20 @@
   background: var(--color-primary);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-weight: 600;
   font-size: 1rem;
+  font-family: var(--font-ui);
   margin-top: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s var(--transition-smooth);
+  box-shadow: 0 4px 15px rgba(47, 92, 255, 0.25);
 }
 
 .public-auth-submit:hover:not(:disabled) {
   background: var(--color-primary-light);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(30, 86, 255, 0.3);
+  box-shadow: 0 8px 25px rgba(47, 92, 255, 0.45);
 }
 
 .public-auth-submit:disabled {
@@ -129,8 +166,10 @@
   color: var(--color-primary-light);
   text-decoration: none;
   font-weight: 600;
+  transition: color 0.2s ease;
 }
 
 .public-auth-footer a:hover {
-  text-decoration: underline;
+  color: var(--color-accent);
+  text-decoration: none;
 }
