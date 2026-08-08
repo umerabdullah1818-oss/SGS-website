@@ -83,7 +83,7 @@ export default function Navbar() {
       {/* Auth Buttons */}
       <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         {loading ? null : user ? (
-          <div className="navbar__dropdown-wrapper navbar__profile-desktop" ref={profileRef}>
+          <div className="navbar__dropdown-wrapper navbar__desktop-only" ref={profileRef}>
             <button 
               className="navbar__profile-btn"
               onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
@@ -112,7 +112,7 @@ export default function Navbar() {
           </div>
         ) : (
           <>
-            <Link href="/login" className="navbar__link" style={{ fontWeight: 600 }}>
+            <Link href="/login" className="navbar__link navbar__desktop-only" style={{ fontWeight: 600 }}>
               Login
             </Link>
             <Link href="/signup" className="navbar__cta">

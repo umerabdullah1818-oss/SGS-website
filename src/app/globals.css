@@ -1655,7 +1655,7 @@ button {
   width: 100%;
 }
 @media (max-width: 1024px) {
-  .navbar__profile-desktop {
+  .navbar__desktop-only {
     display: none !important;
   }
 }
