@@ -25,14 +25,11 @@
   font-family: var(--font-heading);
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 900;
-  color: var(--color-white);
+  color: var(--color-text);
   line-height: 1.1;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
   letter-spacing: -0.01em;
-  background: linear-gradient(135deg, #ffffff, #94a3b8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .register-header p {
@@ -50,8 +47,8 @@
 }
 
 .game-card {
-  background: var(--color-glass-bg);
-  border: 1px solid var(--color-glass-border);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   transition: all 0.3s var(--transition-smooth);
@@ -62,22 +59,23 @@
   position: relative;
   overflow: hidden;
   text-decoration: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .game-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(47, 92, 255, 0.08) 0%, transparent 60%);
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.08) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .game-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(47, 92, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-color: rgba(138, 43, 226, 0.3);
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .game-card:hover::before {
@@ -111,7 +109,7 @@
 }
 
 .game-card__tag--active {
-  background: rgba(47, 92, 255, 0.15);
+  background: rgba(138, 43, 226, 0.15);
   color: var(--color-accent);
   border-color: rgba(0, 240, 255, 0.2);
 }
@@ -120,7 +118,7 @@
   font-family: var(--font-heading);
   font-size: 1.75rem;
   font-weight: 800;
-  color: var(--color-white);
+  color: var(--color-text);
   line-height: 1.1;
   margin-bottom: 0.5rem;
   letter-spacing: 0.01em;
@@ -142,7 +140,7 @@
 .game-card__footer {
   margin-top: auto;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -165,14 +163,12 @@
 
 /* ── Multi-Step Form Layout ── */
 .step-container {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--color-glass-border);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: 3rem;
   margin-top: 2rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
   position: relative;
 }
 
@@ -186,7 +182,7 @@
   font-family: var(--font-heading);
   font-size: 1.9rem;
   font-weight: 800;
-  color: var(--color-white);
+  color: var(--color-text);
   letter-spacing: 0.01em;
 }
 
@@ -257,7 +253,7 @@
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: white;
-  box-shadow: 0 0 15px rgba(47, 92, 255, 0.5);
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
 }
 
 .step-item--completed .step-item__circle {
@@ -279,7 +275,7 @@
 }
 
 .step-item--active .step-item__label {
-  color: var(--color-white);
+  color: var(--color-text);
 }
 
 /* ── Format Selector ── */
@@ -300,20 +296,20 @@
 }
 
 .format-card:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(138, 43, 226, 0.04);
+  border-color: rgba(138, 43, 226, 0.15);
 }
 
 .format-card--selected {
-  background: rgba(47, 92, 255, 0.08);
+  background: rgba(138, 43, 226, 0.08);
   border-color: var(--color-primary);
-  box-shadow: 0 0 20px rgba(47, 92, 255, 0.15);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.15);
 }
 
 .format-card__name {
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--color-white);
+  color: var(--color-text);
   margin-bottom: 0.5rem;
 }
 
@@ -340,7 +336,7 @@
   display: block;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--color-white);
+  color: var(--color-text);
   margin-bottom: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -356,10 +352,10 @@
 .reg-form-select {
   width: 100%;
   padding: 0.85rem 1.1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  color: var(--color-white);
+  color: var(--color-text);
   font-family: var(--font-ui);
   font-size: 0.95rem;
   transition: all 0.25s var(--transition-smooth);
@@ -369,18 +365,18 @@
 .reg-form-input:focus,
 .reg-form-select:focus {
   border-color: var(--color-primary-light);
-  background: rgba(47, 92, 255, 0.03);
-  box-shadow: 0 0 0 3px rgba(47, 92, 255, 0.15);
+  background: rgba(138, 43, 226, 0.03);
+  box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.15);
 }
 
 .reg-form-input::placeholder {
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(0, 0, 0, 0.35);
 }
 
 .reg-form-select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(0,0,0,0.4)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1.25rem center;
 }
@@ -392,8 +388,8 @@
 
 /* ── Player Block ── */
 .player-block {
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   margin-bottom: 1.25rem;
@@ -401,7 +397,7 @@
 }
 
 .player-block:hover {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(138, 43, 226, 0.15);
 }
 
 .player-block__header {
@@ -435,14 +431,14 @@
   justify-content: space-between;
   margin-top: 3.5rem;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--color-border);
 }
 
 .btn-back {
   padding: 0.85rem 1.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--color-white);
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
   border-radius: var(--radius-md);
   font-family: var(--font-ui);
   font-weight: 600;
@@ -452,8 +448,8 @@
 }
 
 .btn-back:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(138, 43, 226, 0.05);
+  border-color: rgba(138, 43, 226, 0.15);
 }
 
 .btn-next {
@@ -470,13 +466,13 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 15px rgba(47, 92, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.25);
 }
 
 .btn-next:hover:not(:disabled) {
   background: var(--color-primary-light);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(47, 92, 255, 0.4);
+  box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
 }
 
 .btn-next:disabled {
@@ -486,8 +482,8 @@
 
 /* ── Payment Info Box ── */
 .payment-info-box {
-  background: rgba(47, 92, 255, 0.06);
-  border: 1px solid rgba(47, 92, 255, 0.15);
+  background: rgba(138, 43, 226, 0.06);
+  border: 1px solid rgba(138, 43, 226, 0.15);
   border-radius: var(--radius-md);
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -515,26 +511,26 @@
 }
 
 .payment-value {
-  color: var(--color-white);
+  color: var(--color-text);
   font-weight: 700;
   font-size: 0.98rem;
 }
 
 /* ── File Upload ── */
 .file-upload-area {
-  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border: 2px dashed var(--color-border);
   border-radius: var(--radius-lg);
   padding: 3.5rem 2rem;
   text-align: center;
   transition: all 0.25s var(--transition-smooth);
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.01);
+  background: var(--color-bg-deep);
 }
 
 .file-upload-area:hover,
 .file-upload-area--active {
   border-color: var(--color-accent);
-  background: rgba(47, 92, 255, 0.04);
+  background: rgba(138, 43, 226, 0.04);
 }
 
 .file-upload-icon {
@@ -552,7 +548,7 @@
 .file-upload-text {
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--color-white);
+  color: var(--color-text);
   margin-bottom: 0.5rem;
 }
 
@@ -589,7 +585,7 @@
   font-family: var(--font-heading);
   font-size: 2.6rem;
   font-weight: 900;
-  color: var(--color-white);
+  color: var(--color-text);
   margin-bottom: 1rem;
   letter-spacing: -0.01em;
 }

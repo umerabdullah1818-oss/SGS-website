@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 
 // Links always visible to everyone
@@ -20,6 +21,7 @@ const authLinks = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const { user, loading, logout } = useAuth();
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function Navbar() {
     window.location.href = "/";
   };
 
-  const isAdmin = user?.role === "superadmin" || user?.role === "head";
+  const isAdmin = user?.role === "admin" || user?.role === "superadmin" || user?.role === "head";
 
   const visibleLinks = user
     ? [
@@ -50,11 +52,7 @@ export default function Navbar() {
     <nav className={`navbar ${scrolled ? "scrolled" : ""}`} id="navbar">
       {/* Logo */}
       <Link href="/" className="navbar__logo">
-        <div className="navbar__logo-icon">SGS</div>
-        <div className="navbar__logo-text">
-          SPORTS GUILD
-          <span>Society</span>
-        </div>
+        <Image src="/logo.png" alt="SGS Logo" width={420} height={180} className="navbar__logo-img" />
       </Link>
 
       {/* Desktop Links */}
@@ -91,6 +89,34 @@ export default function Navbar() {
               Sign Up
             </Link>
           </>
+        )}
+        <button
+          className={`navbar__menu-btn ${mobileOpen ? "active" : ""}`}
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`navbar__mobile-menu ${mobileOpen ? "open" : ""}`}>
+        {visibleLinks.map((link) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            className="navbar__link"
+            onClick={() => setMobileOpen(false)}
+          >
+            {link.label}
+          </Link>
+        ))}
+        {!user && (
+          <Link href="/login" className="navbar__cta" onClick={() => setMobileOpen(false)}>
+            Sign In
+          </Link>
         )}
       </div>
     </nav>

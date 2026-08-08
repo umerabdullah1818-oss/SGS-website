@@ -12,7 +12,7 @@ const YEARS = [
 
 const GROUP_COLORS: Record<string, string> = {
   "Mentor": "#a070ff",
-  "Executive Body": "#6098ff",
+  "Executive Body": "#8a2be2",
   "Game Head": "#00c864",
   "Core Committee": "#ffc800",
 };
@@ -117,7 +117,7 @@ export default function PublicTeamPage() {
                   <h2 style={{
                     fontFamily: "var(--font-heading)",
                     fontSize: "1.5rem",
-                    color: "white",
+                    color: "var(--color-text)",
                     letterSpacing: "-0.01em",
                   }}>
                     {group}
@@ -190,7 +190,7 @@ export default function PublicTeamPage() {
                             </div>
                           )}
                           <div>
-                            <div style={{ fontWeight: 700, color: "white", fontSize: "1.1rem" }}>
+                            <div style={{ fontWeight: 700, color: "var(--color-text)", fontSize: "1.1rem" }}>
                               {member.name}
                             </div>
                             <div style={{

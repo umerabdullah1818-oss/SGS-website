@@ -7,7 +7,7 @@
   padding: 2rem;
   padding-top: 120px;
   font-family: var(--font-ui);
-  color: var(--color-white);
+  color: var(--color-text);
   position: relative;
   overflow: hidden;
 }
@@ -21,7 +21,7 @@
   transform: translate(-50%, -50%);
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(47, 92, 255, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.08) 0%, transparent 70%);
   z-index: 1;
   pointer-events: none;
 }
@@ -29,20 +29,20 @@
 .public-auth-card {
   width: 100%;
   max-width: 420px;
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--color-glass-border);
+  background: var(--color-white);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: 3rem 2.5rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 2;
   transition: transform 0.3s var(--transition-smooth), border-color 0.3s ease;
 }
 
 .public-auth-card:hover {
-  border-color: rgba(47, 92, 255, 0.2);
+  border-color: rgba(138, 43, 226, 0.2);
 }
 
 .public-auth-logo {
@@ -68,7 +68,7 @@
   font-size: 1.85rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
-  color: var(--color-white);
+  color: var(--color-text);
 }
 
 .public-auth-subtitle {
@@ -108,10 +108,10 @@
 .public-auth-group input {
   width: 100%;
   padding: 0.8rem 1.1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  color: var(--color-white);
+  color: var(--color-text);
   font-size: 0.95rem;
   font-family: var(--font-ui);
   outline: none;
@@ -119,13 +119,13 @@
 }
 
 .public-auth-group input::placeholder {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .public-auth-group input:focus {
   border-color: var(--color-primary-light);
-  background: rgba(47, 92, 255, 0.03);
-  box-shadow: 0 0 0 3px rgba(47, 92, 255, 0.15);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.15);
 }
 
 .public-auth-submit {
@@ -141,13 +141,13 @@
   margin-top: 1rem;
   cursor: pointer;
   transition: all 0.3s var(--transition-smooth);
-  box-shadow: 0 4px 15px rgba(47, 92, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.2);
 }
 
 .public-auth-submit:hover:not(:disabled) {
   background: var(--color-primary-light);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(47, 92, 255, 0.45);
+  box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3);
 }
 
 .public-auth-submit:disabled {

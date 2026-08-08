@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Navbar from "@/app/components/Navbar";
 import GameCard from "@/app/components/register/GameCard";
 import type { Game } from "@/types";
 import "./register.css";
@@ -36,16 +37,8 @@ export default async function RegisterPage() {
 
   return (
     <div className="register-layout">
-      {/* Navbar overlay header */}
-      <header style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "1.25rem 3.5rem", zIndex: 10 }}>
-        <Link href="/" className="navbar__logo">
-          <div className="navbar__logo-icon">SGS</div>
-          <div className="navbar__logo-text">
-            SPORTS GUILD
-            <span>Society</span>
-          </div>
-        </Link>
-      </header>
+      {/* Navbar */}
+      <Navbar />
 
       <div className="register-container">
         <div className="register-header">
