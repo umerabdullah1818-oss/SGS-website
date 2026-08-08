@@ -141,7 +141,7 @@ export default function AdminUsersPage() {
         
         {/* Left: Add User Form */}
         <div className="admin-card">
-          <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", marginBottom: "1rem", color: "var(--color-white)" }}>
+          <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", marginBottom: "1rem", color: "var(--color-text)" }}>
             Add New User
           </h3>
           <form onSubmit={handleAddUser} className="admin-form" style={{ gap: "1rem" }}>
@@ -262,7 +262,7 @@ export default function AdminUsersPage() {
 
         {/* Right: User List */}
         <div>
-          <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", marginBottom: "1rem", color: "var(--color-white)" }}>
+          <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", marginBottom: "1rem", color: "var(--color-text)" }}>
             Existing Users
           </h3>
           {loading ? (
@@ -394,3 +394,4 @@ export default function AdminUsersPage() {
     </>
   );
 }
+

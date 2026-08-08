@@ -355,7 +355,7 @@
   background: var(--color-bg-deep);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  color: var(--color-text);
+  color: #111827 !important;
   font-family: var(--font-ui);
   font-size: 0.95rem;
   transition: all 0.25s var(--transition-smooth);
@@ -403,8 +403,11 @@
 .player-block__header {
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--color-primary-light);
-  margin-bottom: 1.25rem;
+  color: #ffffff;
+  background: var(--color-primary);
+  margin: -1.5rem -1.5rem 1.25rem -1.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

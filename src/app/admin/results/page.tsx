@@ -91,7 +91,7 @@ export default function AdminResultsPage() {
               {results.map((res) => (
                 <tr key={res.id}>
                   <td>
-                    <div style={{ fontWeight: 600, color: "var(--color-white)" }}>{res.gameName}</div>
+                    <div style={{ fontWeight: 600, color: "var(--color-text)" }}>{res.gameName}</div>
                     <div style={{ fontSize: "0.8rem", color: "var(--color-text-muted)" }}>{res.category} • {res.formatName}</div>
                   </td>
                   <td style={{ color: "#ffd700", fontWeight: 600 }}>{res.firstPlace}</td>
@@ -114,3 +114,4 @@ export default function AdminResultsPage() {
     </>
   );
 }
+

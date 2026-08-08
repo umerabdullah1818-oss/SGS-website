@@ -136,7 +136,7 @@ export default function AdminGamesPage() {
                 return (
                   <tr key={game.id}>
                     <td>
-                      <div style={{ fontWeight: 600, color: "var(--color-white)" }}>{game.name}</div>
+                      <div style={{ fontWeight: 600, color: "var(--color-text)" }}>{game.name}</div>
                       <div style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{game.venue}</div>
                     </td>
                     <td>
@@ -210,6 +210,29 @@ export default function AdminGamesPage() {
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                           </svg>
                           Edit
+                        </button>
+                        <button
+                          className="admin-btn admin-btn--primary admin-btn--sm"
+                          onClick={() => router.push(`/admin/games/${game.id}/schedule`)}
+                          title="Schedule"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                          </svg>
+                          Schedule
+                        </button>
+                        <button
+                          className="admin-btn admin-btn--secondary admin-btn--sm"
+                          onClick={() => router.push(`/admin/games/${game.id}/matches`)}
+                          title="Matches"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 20v-6M6 20V10M18 20V4" />
+                          </svg>
+                          Matches
                         </button>
                         {user?.role === "superadmin" && (
                           <>
