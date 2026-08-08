@@ -13,6 +13,7 @@ interface GameFormProps {
     id?: string;
     name: string;
     category: string;
+    eventName?: string;
     venue: string;
     isActive: boolean;
     description: string;
