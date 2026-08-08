@@ -259,6 +259,11 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
+    // Registration must be closed
+    if (game.isActive) {
+      return NextResponse.json({ error: "Registration is still open. Please close registration before generating a schedule." }, { status: 400 });
+    }
+
     // Lock: once schedule is generated, only superadmin can regenerate
     if (game.matches && game.matches.length > 0 && admin.role !== "superadmin") {
       return NextResponse.json({ error: "Schedule already exists. Only admin can regenerate the schedule." }, { status: 403 });

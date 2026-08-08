@@ -31,6 +31,10 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
+    if (game.isActive) {
+      return NextResponse.json({ error: "Registration is open. Please close registration before scheduling matches or updating results." }, { status: 400 });
+    }
+
     if (!game.matches || !Array.isArray(game.matches)) {
       return NextResponse.json({ error: "No schedule generated yet" }, { status: 400 });
     }
