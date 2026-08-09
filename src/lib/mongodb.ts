@@ -1,12 +1,16 @@
 // ══════════════════════════════════════════════════════════
 //  MongoDB Connection — Singleton for Next.js
 //  Used by both API routes and server-side pages.
-//  Connects to local MongoDB instance.
+//  Connects to MongoDB Atlas cloud cluster.
 // ══════════════════════════════════════════════════════════
 
 import { MongoClient, Db } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/sgs-website";
+const MONGODB_URI = process.env.MONGODB_URI!;
+
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable in .env.local");
+}
 
 let client: MongoClient | null = null;
 let db: Db | null = null;
