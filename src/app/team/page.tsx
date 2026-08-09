@@ -3,50 +3,44 @@
 import { useEffect, useState } from "react";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
-import type { TeamMember } from "@/types";
+import type { TeamMember, RoleGroup } from "@/types";
 
-const YEARS = [
-  "2025-26", "2024-25", "2023-24", "2022-23", "2021-22",
-  "2020-21", "2019-20", "2018-19", "2017-18", "2016-17",
-];
+const CATEGORIES: RoleGroup[] = ["Core Committee", "Game Heads", "Co-Heads"];
 
-const GROUP_COLORS: Record<string, string> = {
-  "Mentor": "#a070ff",
-  "Executive Body": "#8a2be2",
-  "Game Head": "#00c864",
+const CATEGORY_COLORS: Record<RoleGroup, string> = {
   "Core Committee": "#ffc800",
-};
-
-const GROUP_GRADIENTS: Record<string, string> = {
-  "Mentor": "linear-gradient(135deg, rgba(140,80,255,0.2), rgba(140,80,255,0.05))",
-  "Executive Body": "linear-gradient(135deg, rgba(30,86,255,0.2), rgba(30,86,255,0.05))",
-  "Game Head": "linear-gradient(135deg, rgba(0,200,100,0.2), rgba(0,200,100,0.05))",
-  "Core Committee": "linear-gradient(135deg, rgba(255,200,0,0.2), rgba(255,200,0,0.05))",
+  "Game Heads": "#00c864",
+  "Co-Heads": "#8a2be2",
 };
 
 export default function PublicTeamPage() {
   const [members, setMembers] = useState<TeamMember[]>([]);
+  const [years, setYears] = useState<string[]>([]);
+  const [selectedYear, setSelectedYear] = useState("");
   const [loading, setLoading] = useState(true);
-  const [selectedYear, setSelectedYear] = useState(YEARS[0]);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
 
+  // Fetch team members based on selected year (or empty for initial load)
   useEffect(() => {
     setLoading(true);
-    setExpandedId(null);
-    fetch(`/api/team?year=${encodeURIComponent(selectedYear)}`)
+    const url = selectedYear ? `/api/team?year=${encodeURIComponent(selectedYear)}` : "/api/team";
+    fetch(url)
       .then((r) => r.json())
-      .then((d) => setMembers(d.members || []))
-      .catch(() => setMembers([]))
+      .then((d) => {
+        setMembers(d.members || []);
+        if (d.years) setYears(d.years);
+        if (d.selectedYear && !selectedYear) {
+          setSelectedYear(d.selectedYear);
+        }
+      })
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, [selectedYear]);
 
-  const groups = ["Mentor", "Executive Body", "Game Head", "Core Committee"];
-  const grouped = groups
-    .map((group) => ({
-      group,
-      members: members.filter((m) => m.roleGroup === group),
-    }))
-    .filter((g) => g.members.length > 0);
+  // Group active members by category
+  const grouped = CATEGORIES.map((category) => ({
+    category,
+    members: members.filter((m) => m.roleGroup === category),
+  })).filter((g) => g.members.length > 0);
 
   return (
     <>
@@ -61,225 +55,112 @@ export default function PublicTeamPage() {
             The passionate individuals who make the Sports Guild Society thrive. Meet our team across the years.
           </p>
 
-          {/* Year Selector */}
-          <div className="team-year-selector">
-            {YEARS.map((y) => (
-              <button
-                key={y}
-                onClick={() => setSelectedYear(y)}
-                className={`team-year-btn ${selectedYear === y ? "team-year-btn--active" : ""}`}
+          {/* Year Dropdown Selector */}
+          {years.length > 0 && (
+            <div className="select-container">
+              <select
+                className="custom-dropdown"
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
               >
-                {y}
-              </button>
-            ))}
-          </div>
+                {years.map((y) => (
+                  <option key={y} value={y}>
+                    SGS Team {y}
+                  </option>
+                ))}
+              </select>
+              <div className="select-arrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Content */}
+        {/* Content Section */}
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 2rem" }}>
           {loading ? (
-            <div style={{ textAlign: "center", padding: "4rem", color: "var(--color-text-muted)" }}>
-              <div style={{
-                width: "48px", height: "48px", border: "3px solid rgba(255,255,255,0.1)",
-                borderTopColor: "var(--color-primary)", borderRadius: "50%",
-                animation: "spin 0.8s linear infinite", margin: "0 auto 1rem",
-              }} />
-              Loading team...
+            <div style={{ textAlign: "center", padding: "6rem", color: "var(--color-text-muted)" }}>
+              <div className="loading-spinner" />
+              <p style={{ marginTop: "1rem" }}>Loading team members...</p>
             </div>
           ) : grouped.length === 0 ? (
             <div style={{
               textAlign: "center",
               padding: "4rem 2rem",
-              background: "rgba(255,255,255,0.02)",
-              borderRadius: "20px",
-              border: "1px solid rgba(255,255,255,0.06)",
+              background: "var(--color-glass-bg)",
+              borderRadius: "var(--radius-lg)",
+              border: "1px solid var(--color-glass-border)",
             }}>
-              <p style={{ fontSize: "1.1rem", color: "var(--color-text-muted)" }}>
+              <p style={{ fontSize: "1.1rem", color: "var(--color-text-muted)", fontStyle: "italic" }}>
                 No team data available for {selectedYear} yet.
               </p>
             </div>
           ) : (
-            grouped.map(({ group, members: groupMembers }) => (
-              <div key={group} style={{ marginBottom: "3.5rem" }}>
-                {/* Group Header */}
+            grouped.map(({ category, members: categoryMembers }) => (
+              <div key={category} style={{ marginBottom: "5rem" }}>
+                {/* Section Header */}
                 <div style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "1rem",
-                  marginBottom: "1.5rem",
+                  marginBottom: "2.5rem",
                 }}>
                   <div style={{
                     width: "4px",
                     height: "28px",
                     borderRadius: "2px",
-                    background: GROUP_COLORS[group],
+                    background: CATEGORY_COLORS[category],
                   }} />
                   <h2 style={{
                     fontFamily: "var(--font-heading)",
-                    fontSize: "1.5rem",
+                    fontSize: "1.6rem",
                     color: "var(--color-text)",
+                    fontWeight: 800,
                     letterSpacing: "-0.01em",
                   }}>
-                    {group}
+                    {category}
                   </h2>
                   <span style={{
                     fontSize: "0.8rem",
-                    color: GROUP_COLORS[group],
-                    fontWeight: 600,
-                    background: `${GROUP_COLORS[group]}22`,
-                    padding: "0.2rem 0.75rem",
+                    color: CATEGORY_COLORS[category],
+                    fontWeight: 700,
+                    background: `${CATEGORY_COLORS[category]}1a`,
+                    padding: "0.25rem 0.85rem",
                     borderRadius: "20px",
                   }}>
-                    {groupMembers.length}
+                    {categoryMembers.length}
                   </span>
                 </div>
 
-                {/* Cards Grid */}
-                <div style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                  gap: "1.5rem",
-                }}>
-                  {groupMembers.map((member) => {
-                    const isExpanded = expandedId === member.id;
-                    return (
-                      <div
-                        key={member.id}
-                        onClick={() => setExpandedId(isExpanded ? null : member.id)}
-                        className="glass-card"
-                        style={{
-                          background: isExpanded ? GROUP_GRADIENTS[group] : "var(--color-glass-bg)",
-                          border: `1px solid ${isExpanded ? GROUP_COLORS[group] + "66" : "var(--color-glass-border)"}`,
-                          padding: "2rem",
-                          boxShadow: isExpanded ? `0 10px 30px ${GROUP_COLORS[group]}1a` : "none",
-                        }}
-                      >
-                        {/* Top part */}
-                        <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", marginBottom: isExpanded ? "1.25rem" : 0 }}>
-                          {member.photoUrl ? (
-                            <img
-                              src={member.photoUrl}
-                              alt={member.name}
-                              style={{
-                                width: 64,
-                                height: 64,
-                                borderRadius: "50%",
-                                objectFit: "cover",
-                                border: `3px solid ${GROUP_COLORS[group]}`,
-                                boxShadow: `0 0 15px ${GROUP_COLORS[group]}40`,
-                                flexShrink: 0,
-                              }}
-                            />
-                          ) : (
-                            <div style={{
-                              width: 64,
-                              height: 64,
-                              borderRadius: "50%",
-                              background: `${GROUP_COLORS[group]}15`,
-                              border: `2px solid ${GROUP_COLORS[group]}44`,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontSize: "1.5rem",
-                              fontWeight: 800,
-                              color: GROUP_COLORS[group],
-                              flexShrink: 0,
-                              boxShadow: `0 0 15px ${GROUP_COLORS[group]}15`,
-                            }}>
-                              {member.name.charAt(0).toUpperCase()}
-                            </div>
-                          )}
-                          <div>
-                            <div style={{ fontWeight: 700, color: "var(--color-text)", fontSize: "1.1rem" }}>
-                              {member.name}
-                            </div>
-                            <div style={{
-                              fontSize: "0.85rem",
-                              color: GROUP_COLORS[group],
-                              fontWeight: 600,
-                              marginTop: "0.2rem",
-                              letterSpacing: "0.02em",
-                            }}>
-                              {member.designation}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Expanded details */}
-                        {isExpanded && (
-                          <div style={{
-                            borderTop: `1px solid ${GROUP_COLORS[group]}25`,
-                            paddingTop: "1.25rem",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "1.25rem",
-                            animation: "fadeIn 0.3s ease",
-                          }}>
-                            {member.successStory && (
-                              <div>
-                                <div style={{ fontSize: "0.75rem", fontWeight: 700, color: GROUP_COLORS[group], marginBottom: "0.4rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                                  Success Story
-                                </div>
-                                <p style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.65 }}>
-                                  {member.successStory}
-                                </p>
-                              </div>
-                            )}
-                            {member.importance && (
-                              <div>
-                                <div style={{ fontSize: "0.75rem", fontWeight: 700, color: GROUP_COLORS[group], marginBottom: "0.4rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                                  Importance to SGS
-                                </div>
-                                <p style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.8)", lineHeight: 1.65 }}>
-                                  {member.importance}
-                                </p>
-                              </div>
-                            )}
-                            {member.feedback && (
-                              <div style={{
-                                background: "rgba(255,255,255,0.02)",
-                                borderRadius: "12px",
-                                padding: "1.25rem",
-                                borderLeft: `4px solid ${GROUP_COLORS[group]}`,
-                                border: `1px solid ${GROUP_COLORS[group]}15`,
-                                borderLeftWidth: "4px",
-                              }}>
-                                <div style={{ fontSize: "0.75rem", fontWeight: 700, color: GROUP_COLORS[group], marginBottom: "0.4rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                                  SGS Feedback
-                                </div>
-                                <p style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.65, fontStyle: "italic" }}>
-                                  &ldquo;{member.feedback}&rdquo;
-                                </p>
-                              </div>
-                            )}
-                            {!member.successStory && !member.importance && !member.feedback && (
-                              <p style={{ fontSize: "0.85rem", color: "var(--color-text-muted)" }}>
-                                No additional details available.
-                              </p>
-                            )}
-                          </div>
-                        )}
-
-                        {/* Click hint */}
-                        {!isExpanded && (member.successStory || member.importance || member.feedback) && (
-                          <div style={{
-                            marginTop: "1rem",
-                            fontSize: "0.75rem",
-                            color: "var(--color-text-muted)",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.35rem",
-                            transition: "color 0.2s ease",
-                          }}>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <polyline points="6 9 12 15 18 9" />
-                            </svg>
-                            Click to view full profile
+                {/* Cards Grid: 4 columns on desktop, responsive below */}
+                <div className="members-grid">
+                  {categoryMembers.map((member) => (
+                    <div key={member.id} className="member-card">
+                      <div className="category-accent-bar" style={{ background: CATEGORY_COLORS[category] }} />
+                      
+                      {/* Photo Container */}
+                      <div className="photo-wrapper">
+                        {member.photoUrl ? (
+                          <img src={member.photoUrl} alt={member.name} className="member-photo" />
+                        ) : (
+                          <div className="member-photo-placeholder" style={{ background: `${CATEGORY_COLORS[category]}15`, color: CATEGORY_COLORS[category] }}>
+                            {member.name.charAt(0).toUpperCase()}
                           </div>
                         )}
                       </div>
-                    );
-                  })}
+
+                      {/* Info Badge Card Overlay */}
+                      <div className="info-box">
+                        <h3 className="member-name">{member.name}</h3>
+                        <p className="member-batch">Batch {member.batch}</p>
+                        <p className="member-designation" style={{ color: CATEGORY_COLORS[category] }}>
+                          {member.designation}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))
@@ -288,13 +169,197 @@ export default function PublicTeamPage() {
       </div>
       <Footer />
 
+      {/* Styled JSX for Responsive Layout and Animations */}
       <style jsx>{`
+        .select-container {
+          position: relative;
+          min-width: 220px;
+          display: inline-block;
+          margin-top: 2rem;
+        }
+
+        .custom-dropdown {
+          width: 100%;
+          padding: 0.85rem 3rem 0.85rem 1.5rem;
+          background: var(--color-glass-bg);
+          border: 1px solid var(--color-glass-border);
+          border-radius: 50px;
+          color: var(--color-text);
+          font-family: var(--font-ui);
+          font-size: 0.95rem;
+          font-weight: 700;
+          appearance: none;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+          transition: all 0.3s var(--transition-smooth);
+          outline: none;
+        }
+
+        .custom-dropdown:hover {
+          border-color: rgba(138, 43, 226, 0.3);
+          box-shadow: 0 8px 25px rgba(138, 43, 226, 0.08);
+          transform: translateY(-1px);
+        }
+
+        .custom-dropdown:focus {
+          border-color: var(--color-primary);
+          box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.15);
+        }
+
+        .select-arrow {
+          position: absolute;
+          right: 1.25rem;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+          color: var(--color-text-muted);
+          display: flex;
+          align-items: center;
+        }
+
+        .members-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 3.5rem 1.5rem;
+        }
+
+        .member-card {
+          background: rgba(0, 0, 0, 0.02);
+          border: 1px solid var(--color-glass-border);
+          border-radius: var(--radius-lg);
+          padding: 0.85rem;
+          position: relative;
+          overflow: visible;
+          transition: all 0.3s var(--transition-smooth);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-bottom: 1rem;
+        }
+
+        .member-card:hover {
+          transform: translateY(-4px);
+          border-color: rgba(138, 43, 226, 0.2);
+          box-shadow: 0 12px 30px rgba(138, 43, 226, 0.08);
+        }
+
+        .category-accent-bar {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: 4px;
+        }
+
+        .photo-wrapper {
+          width: 100%;
+          aspect-ratio: 1 / 1.1;
+          border-radius: var(--radius-md);
+          overflow: hidden;
+          position: relative;
+          background: rgba(0, 0, 0, 0.03);
+          border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .member-photo {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.4s var(--transition-smooth);
+        }
+
+        .member-card:hover .member-photo {
+          transform: scale(1.03);
+        }
+
+        .member-photo-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 3rem;
+          font-weight: 800;
+          font-family: var(--font-heading);
+        }
+
+        .info-box {
+          width: 90%;
+          background: var(--color-glass-bg);
+          border: 1px solid var(--color-glass-border);
+          border-radius: var(--radius-md);
+          padding: 1rem 0.5rem;
+          text-align: center;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+          margin-top: -2.25rem;
+          position: relative;
+          z-index: 2;
+          transition: all 0.3s var(--transition-smooth);
+        }
+
+        .member-card:hover .info-box {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 25px rgba(138, 43, 226, 0.12);
+          border-color: rgba(138, 43, 226, 0.25);
+        }
+
+        .member-name {
+          font-family: var(--font-heading);
+          font-size: 1rem;
+          font-weight: 800;
+          color: var(--color-text);
+          margin-bottom: 0.15rem;
+          line-height: 1.3;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+        }
+
+        .member-batch {
+          font-size: 0.75rem;
+          color: var(--color-text-muted);
+          font-weight: 600;
+          margin-bottom: 0.25rem;
+        }
+
+        .member-designation {
+          font-size: 0.82rem;
+          font-weight: 700;
+          font-style: italic;
+          line-height: 1.4;
+        }
+
+        .loading-spinner {
+          width: 48px;
+          height: 48px;
+          border: 3px solid rgba(255, 255, 255, 0.1);
+          border-top-color: var(--color-primary);
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+          margin: 0 auto;
+        }
+
         @keyframes spin {
           to { transform: rotate(360deg); }
         }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1024px) {
+          .members-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .members-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem 1.25rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .members-grid {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </>

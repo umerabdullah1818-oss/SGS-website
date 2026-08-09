@@ -10,7 +10,7 @@ import * as dotenv from "dotenv";
 // Load environment variables from .env.local
 dotenv.config({ path: ".env.local" });
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI as string;
 if (!MONGODB_URI) {
   console.error("❌ MONGODB_URI must be set in .env.local");
   process.exit(1);

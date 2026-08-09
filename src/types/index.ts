@@ -146,7 +146,7 @@ export interface AdminUser {
 
 // ── Team Members ────────────────────────────────────────
 
-export type RoleGroup = "Mentor" | "Executive Body" | "Game Head" | "Core Committee";
+export type RoleGroup = "Core Committee" | "Game Heads" | "Co-Heads";
 
 export interface TeamMember {
   id: string;
@@ -154,10 +154,12 @@ export interface TeamMember {
   designation: string;       // e.g. "President", "Cricket Head"
   roleGroup: RoleGroup;
   year: string;              // e.g. "2025-26", "2024-25"
-  photoUrl?: string;
-  successStory?: string;     // their bio / achievements
-  importance?: string;       // why they matter to SGS
-  feedback?: string;         // feedback from SGS about them
+  batch: string;             // e.g. "2022"
   createdAt: string;
   updatedAt: string;
+  photoUrl?: string;
+  successStory?: string;
+  importance?: string;
+  feedback?: string;
 }
+
