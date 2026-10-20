@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 
 export default function AdminLoginPage() {
@@ -30,10 +32,12 @@ export default function AdminLoginPage() {
     <div className="admin-login">
       <div className="admin-login__card">
         <div className="admin-login__header">
-          <div className="admin-login__logo">SGS</div>
-          <h1 className="admin-login__title">ADMIN PANEL</h1>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+            <Image src="/logo.png" alt="SGS Logo" width={140} height={60} style={{ margin: "0 auto", display: "block", objectFit: "contain" }} />
+          </div>
+          <h1 className="admin-login__title">Admin Panel</h1>
           <p className="admin-login__subtitle">
-            Sign in to manage games, registrations & results
+            Sign in to manage games, registrations &amp; results
           </p>
         </div>
 
@@ -79,6 +83,12 @@ export default function AdminLoginPage() {
             {loading ? "Signing in…" : "Sign In"}
           </button>
         </form>
+        
+        <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
+          <Link href="/" style={{ color: "var(--color-text-muted)", fontSize: "0.9rem", textDecoration: "none" }}>
+            &larr; Return to Website
+          </Link>
+        </div>
       </div>
     </div>
   );

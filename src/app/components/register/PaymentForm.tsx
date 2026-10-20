@@ -75,7 +75,7 @@ export default function PaymentForm({
   return (
     <div>
       <div className="payment-info-box">
-        <h4 style={{ fontSize: "1rem", color: "var(--color-white)", marginBottom: "1rem", display: "flex", justifyContent: "space-between" }}>
+        <h4 style={{ fontSize: "1rem", color: "var(--color-text)", marginBottom: "1rem", display: "flex", justifyContent: "space-between", fontWeight: 700 }}>
           <span>Amount Due</span>
           <span style={{ color: "var(--color-primary-light)", fontSize: "1.2rem" }}>Rs. {fee}</span>
         </h4>

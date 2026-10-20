@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -10,11 +11,7 @@ export default function Footer() {
           {/* Logo & Description */}
           <div className="footer__brand">
             <Link href="/" className="footer__logo">
-              <div className="footer__logo-icon">SGS</div>
-              <div className="footer__logo-text">
-                SPORTS GUILD
-                <span>Society</span>
-              </div>
+              <Image src="/logo.png" alt="SGS Logo" width={420} height={180} className="footer__logo-img" />
             </Link>
             <p className="footer__desc">
               Fostering sportsmanship, brotherhood, and excellence at FAST NUCES Chiniot-Faisalabad Campus. Pop Up. Step In. Play.

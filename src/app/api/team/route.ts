@@ -5,7 +5,7 @@ import { teamMemberSchema } from "@/lib/validations";
 import { getCurrentAdmin, hasPermission } from "@/lib/auth";
 import { Permission } from "@/types";
 
-// GET /api/team — list team members, optionally filtered by ?year=
+// GET /api/team — list team members and years, optionally filtered by ?year=
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -27,13 +27,22 @@ export async function GET(request: Request) {
       return NextResponse.json({ member: { id: _id.toString(), ...rest } });
     }
 
-    const filter: any = {};
-    if (year) filter.year = year;
+    // Get all distinct years in descending order
+    const years = await col.distinct("year");
+    const sortedYears = (years as string[]).sort((a, b) => b.localeCompare(a));
 
+    // Default to the most recent year if not specified
+    const selectedYear = year || sortedYears[0] || "2025-26";
+
+    const filter: any = { year: selectedYear };
     const docs = await col.find(filter).sort({ roleGroupOrder: 1, createdAt: 1 }).toArray();
     const members = docs.map(({ _id, ...rest }) => ({ id: _id.toString(), ...rest }));
 
-    return NextResponse.json({ members });
+    return NextResponse.json({
+      members,
+      selectedYear,
+      years: sortedYears,
+    });
   } catch (error) {
     console.error("GET /api/team error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -52,10 +61,9 @@ export async function POST(request: Request) {
     const data = teamMemberSchema.parse(body);
 
     const roleGroupOrder: Record<string, number> = {
-      "Mentor": 0,
-      "Executive Body": 1,
-      "Game Head": 2,
-      "Core Committee": 3,
+      "Core Committee": 0,
+      "Game Heads": 1,
+      "Co-Heads": 2,
     };
 
     const now = new Date().toISOString();
@@ -94,10 +102,9 @@ export async function PUT(request: Request) {
     const data = teamMemberSchema.parse(body);
 
     const roleGroupOrder: Record<string, number> = {
-      "Mentor": 0,
-      "Executive Body": 1,
-      "Game Head": 2,
-      "Core Committee": 3,
+      "Core Committee": 0,
+      "Game Heads": 1,
+      "Co-Heads": 2,
     };
 
     const db = await getDb();

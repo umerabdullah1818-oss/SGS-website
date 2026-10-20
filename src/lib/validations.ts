@@ -181,17 +181,15 @@ export const csvResultRowSchema = z.object({
 
 // ── Team Members ─────────────────────────────────────────
 
-export const roleGroupSchema = z.enum(["Mentor", "Executive Body", "Game Head", "Core Committee"]);
+export const roleGroupSchema = z.enum(["Core Committee", "Game Heads", "Co-Heads"]);
 
 export const teamMemberSchema = z.object({
   name: z.string().min(1, "Name is required"),
   designation: z.string().min(1, "Designation is required"),
   roleGroup: roleGroupSchema,
   year: z.string().min(1, "Year is required"),
+  batch: z.string().min(1, "Batch is required"),
   photoUrl: z.string().optional(),
-  successStory: z.string().optional(),
-  importance: z.string().optional(),
-  feedback: z.string().optional(),
 });
 
 export type TeamMemberFormData = z.infer<typeof teamMemberSchema>;

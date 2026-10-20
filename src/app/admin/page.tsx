@@ -12,6 +12,7 @@ export default function AdminDashboard() {
     totalRevenue: 0,
     activeGames: 0,
   });
+  const [headStats, setHeadStats] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,14 +23,24 @@ export default function AdminDashboard() {
           const data = await res.json();
           setStats(data);
         }
+        
+        if (user?.role === "superadmin") {
+          const headRes = await fetch("/api/admin/head-stats");
+          if (headRes.ok) {
+            const headData = await headRes.json();
+            setHeadStats(headData.stats);
+          }
+        }
       } catch (err) {
         console.error("Failed to fetch stats", err);
       } finally {
         setLoading(false);
       }
     }
-    fetchStats();
-  }, []);
+    if (user?.role) {
+      fetchStats();
+    }
+  }, [user?.role]);
 
   const isSuperAdmin = user?.role === "superadmin";
   const isHead = user?.role === "head";
@@ -114,7 +125,7 @@ export default function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="admin-card">
-          <h3 style={{ fontSize: "1rem", marginBottom: "1rem", color: "var(--color-white)" }}>Quick Actions</h3>
+          <h3 style={{ fontSize: "1rem", marginBottom: "1rem", color: "var(--color-text)" }}>Quick Actions</h3>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <Link href="/admin/games/new" className="admin-btn admin-btn--secondary" style={{ justifyContent: "flex-start" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -144,7 +155,7 @@ export default function AdminDashboard() {
 
         {/* Role Info */}
         <div className="admin-card">
-          <h3 style={{ fontSize: "1rem", marginBottom: "1rem", color: "var(--color-white)" }}>Your Profile</h3>
+          <h3 style={{ fontSize: "1rem", marginBottom: "1rem", color: "var(--color-text)" }}>Your Profile</h3>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}>Email</span>
@@ -193,7 +204,7 @@ export default function AdminDashboard() {
         {/* Superadmin-only: Platform Management */}
         {isSuperAdmin && (
           <div className="admin-card">
-            <h3 style={{ fontSize: "1rem", marginBottom: "1rem", color: "var(--color-white)" }}>Platform Management</h3>
+            <h3 style={{ fontSize: "1rem", marginBottom: "1rem", color: "var(--color-text)" }}>Platform Management</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               <Link href="/admin/users" className="admin-btn admin-btn--secondary" style={{ justifyContent: "flex-start" }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -222,6 +233,69 @@ export default function AdminDashboard() {
           </div>
         )}
       </div>
+
+      {/* Head Operations Overview */}
+      {isSuperAdmin && headStats && headStats.length > 0 && (
+        <div className="admin-card" style={{ marginTop: "1.5rem" }}>
+          <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "1rem", color: "var(--color-text)" }}>
+            Head Operations Overview
+          </h3>
+          <p style={{ color: "var(--color-text-muted)", marginBottom: "1.5rem", fontSize: "0.9rem" }}>
+            Oversight of all Game Heads, their registrations, and scheduling status.
+          </p>
+          
+          <div className="admin-table-wrapper">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Game Head (Email)</th>
+                  <th>Game</th>
+                  <th>Total Verified Reg.</th>
+                  <th>Schedule Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {headStats.map((head, idx) => {
+                  if (head.games.length === 0) {
+                    return (
+                      <tr key={`head-${idx}`}>
+                        <td>
+                          <span style={{ color: "var(--color-text)", fontWeight: 500 }}>{head.headEmail}</span>
+                        </td>
+                        <td colSpan={3} style={{ color: "var(--color-text-muted)", fontStyle: "italic" }}>
+                          No games assigned/created
+                        </td>
+                      </tr>
+                    );
+                  }
+                  
+                  return head.games.map((g: any, gIdx: number) => (
+                    <tr key={`head-${idx}-game-${gIdx}`}>
+                      {gIdx === 0 && (
+                        <td rowSpan={head.games.length}>
+                          <span style={{ color: "var(--color-text)", fontWeight: 500 }}>{head.headEmail}</span>
+                        </td>
+                      )}
+                      <td>
+                        <span style={{ fontWeight: 600, color: "var(--color-text)" }}>{g.gameName}</span>
+                      </td>
+                      <td>
+                        <span className="admin-badge admin-badge--active">{g.registrationCount} teams/players</span>
+                      </td>
+                      <td>
+                        <span className={`admin-badge ${g.scheduleType === 'Not Scheduled' ? 'admin-badge--warning' : 'admin-badge--active'}`}>
+                          {g.scheduleType}
+                        </span>
+                      </td>
+                    </tr>
+                  ));
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </>
   );
 }
+

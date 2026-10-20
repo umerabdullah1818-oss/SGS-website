@@ -106,7 +106,7 @@ export default function RosterForm({
         
         return (
           <div key={index} className="player-block">
-            <div className="player-block__header" style={{ color: isRequired ? "var(--color-white)" : "var(--color-text-muted)" }}>
+            <div className="player-block__header">
               {format.rosterType === "individual" 
                 ? "Participant Details" 
                 : `Player ${index + 1} ${isRequired ? "" : "(Optional)"}`}

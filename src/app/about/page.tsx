@@ -20,8 +20,8 @@ export default function AboutPage() {
           {/* Content Blocks */}
           <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
             <div className="glass-card">
-              <div className="glass-card__icon" style={{ background: "rgba(30,86,255,0.15)" }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6098ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="glass-card__icon" style={{ background: "rgba(138, 43, 226, 0.1)" }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8a2be2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 16v-4m0-4h.01" />
                 </svg>
@@ -54,11 +54,11 @@ export default function AboutPage() {
               <h2 className="glass-card__title">What We Do</h2>
               <div className="glass-card__desc">
                 <ul style={{ paddingLeft: "1.25rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                  <li><strong style={{ color: "white" }}>Sports Week</strong> — Our flagship annual event featuring 15+ games across multiple categories.</li>
-                  <li><strong style={{ color: "white" }}>Pre-Daira Events</strong> — Warm-up tournaments leading up to the main university fair.</li>
-                  <li><strong style={{ color: "white" }}>Ramzan Events</strong> — Special sporting events during the holy month to keep spirits high.</li>
-                  <li><strong style={{ color: "white" }}>Inter-University Competitions</strong> — Representing FAST CFD at regional and national levels.</li>
-                  <li><strong style={{ color: "white" }}>Skill Development</strong> — Workshops, training camps, and mentorship for emerging athletes.</li>
+                  <li><strong style={{ color: "var(--color-text)" }}>Sports Week</strong> — Our flagship annual event featuring 15+ games across multiple categories.</li>
+                  <li><strong style={{ color: "var(--color-text)" }}>Pre-Daira Events</strong> — Warm-up tournaments leading up to the main university fair.</li>
+                  <li><strong style={{ color: "var(--color-text)" }}>Ramzan Events</strong> — Special sporting events during the holy month to keep spirits high.</li>
+                  <li><strong style={{ color: "var(--color-text)" }}>Inter-University Competitions</strong> — Representing FAST CFD at regional and national levels.</li>
+                  <li><strong style={{ color: "var(--color-text)" }}>Skill Development</strong> — Workshops, training camps, and mentorship for emerging athletes.</li>
                 </ul>
               </div>
             </div>

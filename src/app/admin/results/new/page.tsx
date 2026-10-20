@@ -135,7 +135,7 @@ export default function PostResultPage() {
           )}
 
           <div style={{ marginTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.5rem" }}>
-            <h3 style={{ fontSize: "1rem", color: "var(--color-white)", marginBottom: "1.5rem" }}>Standings</h3>
+            <h3 style={{ fontSize: "1rem", color: "var(--color-text)", marginBottom: "1.5rem" }}>Standings</h3>
             
             <div className="admin-form-group">
               <label className="admin-form-label" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -198,3 +198,4 @@ export default function PostResultPage() {
     </>
   );
 }
+

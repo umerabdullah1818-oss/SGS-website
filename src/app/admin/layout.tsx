@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 import "./admin.css";
 
@@ -119,7 +120,7 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
     return (
       <div className="admin-login" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center", color: "var(--color-text-muted)" }}>
-          <div className="admin-login__logo" style={{ margin: "0 auto 1rem" }}>SGS</div>
+          <Image src="/logo.png" alt="SGS Logo" width={160} height={40} style={{ margin: "0 auto 1rem", borderRadius: "8px" }} />
           <p>Loading…</p>
         </div>
       </div>
@@ -131,13 +132,20 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
     return null;
   }
 
+  // Block regular users from accessing admin pages
+  const isAdminRole = user?.role === "admin" || user?.role === "superadmin" || user?.role === "head";
+  if (user && !isAdminRole && !isLoginPage) {
+    router.push("/");
+    return null;
+  }
+
   if (isLoginPage) {
     return <>{children}</>;
   }
 
   const handleLogout = async () => {
     await logout();
-    router.push("/admin/login");
+    router.push("/");
   };
 
   return (
@@ -157,13 +165,12 @@ function AdminLayoutInner({ children }: { children: ReactNode }) {
 
       {/* Sidebar */}
       <aside className={`admin-sidebar ${sidebarOpen ? "admin-sidebar--open" : ""}`}>
-        <div className="admin-sidebar__header">
-          <div className="admin-sidebar__logo">SGS</div>
+        <div className="admin-sidebar__header" style={{ flexDirection: 'column', alignItems: 'flex-start', padding: '1.5rem', gap: '0.5rem' }}>
+          <Image src="/logo.png" alt="SGS Logo" width={110} height={45} style={{ objectFit: "contain" }} className="admin-sidebar__logo-img" />
           <div>
-            <div className="admin-sidebar__title">
+            <div className="admin-sidebar__title" style={{ fontSize: '1rem', marginTop: '0.5rem' }}>
               {user?.role === "superadmin" ? "Admin Panel" : "Head Panel"}
             </div>
-            <div className="admin-sidebar__subtitle">Sports Guild Society</div>
           </div>
         </div>
 

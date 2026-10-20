@@ -3,6 +3,7 @@
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/app/components/Navbar";
 import { useAuth } from "@/lib/auth-context";
 import "../login/auth.css";
@@ -19,9 +20,14 @@ function PublicSignupContent() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // If already logged in, redirect
+  // If already logged in, redirect based on role
   if (user) {
-    router.push(callback);
+    const isAdminRole = user.role === "admin" || user.role === "superadmin" || user.role === "head";
+    if (isAdminRole) {
+      router.push("/admin");
+    } else {
+      router.push(callback);
+    }
     return null;
   }
 
@@ -55,7 +61,7 @@ function PublicSignupContent() {
       <Navbar />
       <div className="public-auth-layout">
         <div className="public-auth-card">
-          <Link href="/" className="public-auth-logo">SGS</Link>
+          <Link href="/" style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}><Image src="/logo.png" alt="SGS Logo" width={160} height={68} style={{ height: "auto", objectFit: "contain" }} /></Link>
           <h1 className="public-auth-title">Create Account</h1>
           <p className="public-auth-subtitle">Only FAST University students can register</p>
 
